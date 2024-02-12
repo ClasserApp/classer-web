@@ -14,47 +14,35 @@ import { businessTypes } from "@/constants/BusinessTypes";
 import { customerActivityTypes } from "@/constants/ActivityTypes";
 const BusinessTypes = businessTypes;
 const CustomerActivityTypes = customerActivityTypes;
-
 const FormSchema = z.object({
   OwnerEntryName: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    message: "שם הפרטי חייב להיות לפחות 2 תווים.",
   }),
   OwnerEntryLastName: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    message: "שם המשפחה חייב להיות לפחות 2 תווים.",
   }),
   phone: z
-    .number()
+    .string()
     .min(10, {
-      message: "Username must be at least 2 characters.",
+      message: "מספר הטלפון חייב להיות לפחות 10 תווים.",
     })
-    .max(10),
-  OwnerEntryIdentity: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    .max(15, {
+      message: "מספר הטלפון לא יכול לעלות על 15 תווים.",
+    }),
+  OwnerEntryIdentity: z.string().regex(/^\d{9}$/, {
+    message: "תעודת הזהות חייבת להיות בדיוק 9 ספרות.",
   }),
-  // password: z.string().min(1, {
-  //   message: "Password must be at least 1 characters.",
-  // }),
-
-  // ContactMail: z.string().min(1, {
-  //   message: "Password must be at least 1 characters.",
-  // }),
-  // OwnerEntryIdentity: z.string().min(1, {
-  //   message: "Password must be at least 1 characters.",
-  // }),
-  // OwnerEntryBD: z.string().min(1, {
-  //   message: "Password must be at least 1 characters.",
-  // }),
   businessType: z.string().min(1, {
-    message: "Password must be at least 1 characters.",
+    message: "יש לבחור סוג עסק.",
   }),
   customerActivityTypeId: z.string().min(1, {
-    message: "Password must be at least 1 characters.",
+    message: "יש לבחור סוג פעילות לקוח.",
   }),
   businessNumber: z.string().min(1, {
-    message: "Password must be at least 1 characters.",
+    message: "יש להזין מספר עסק.",
   }),
   incomeTaxFileNumber: z.string().min(1, {
-    message: "Password must be at least 1 characters.",
+    message: "יש להזין מספר תיק מס הכנסה.",
   }),
 });
 
@@ -66,9 +54,8 @@ export function SignUpForm() {
     defaultValues: {
       OwnerEntryName: "",
       OwnerEntryLastName: "",
-      phone: 0,
+      phone: "", // Changed from 0 to an empty string
       OwnerEntryIdentity: "",
-      // OwnerEntryBD: "",
       businessType: "",
       customerActivityTypeId: "",
       businessNumber: "",
