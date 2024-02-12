@@ -23,11 +23,11 @@ const FormSchema = z.object({
   }),
   phone: z
     .string()
-    .min(10, {
-      message: "מספר הטלפון חייב להיות לפחות 10 תווים.",
+    .min(9, {
+      message: "מספר הטלפון חייב להיות לפחות 9 תווים.",
     })
-    .max(15, {
-      message: "מספר הטלפון לא יכול לעלות על 15 תווים.",
+    .max(10, {
+      message: "מספר הטלפון לא יכול לעלות על 10 תווים.",
     }),
   OwnerEntryIdentity: z.string().regex(/^\d{9}$/, {
     message: "תעודת הזהות חייבת להיות בדיוק 9 ספרות.",
@@ -46,29 +46,32 @@ const FormSchema = z.object({
   }),
 });
 
+const defaultValues = {
+  OwnerEntryName: "",
+  OwnerEntryLastName: "",
+  phone: "",
+  OwnerEntryIdentity: "",
+  businessType: "",
+  customerActivityTypeId: "",
+  businessNumber: "",
+  incomeTaxFileNumber: "",
+};
+
 export function SignUpForm() {
   const [formData, setFormData] = useState<z.infer<typeof FormSchema>>();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      OwnerEntryName: "",
-      OwnerEntryLastName: "",
-      phone: "", // Changed from 0 to an empty string
-      OwnerEntryIdentity: "",
-      businessType: "",
-      customerActivityTypeId: "",
-      businessNumber: "",
-      incomeTaxFileNumber: "",
-    },
+    defaultValues: defaultValues,
   });
 
   useEffect(() => {
     console.log(JSON.stringify(formData, null, 2));
   }, [formData]);
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setFormData(data);
-    console.log(data);
+    console.log("jk");
   }
 
   return (
