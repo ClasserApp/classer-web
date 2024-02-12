@@ -3,15 +3,15 @@ import axios from "axios"; // Import Axios at the top of your file
 import { z } from "zod";
 
 export async function createCustomer(data: z.infer<typeof FormSchema>) {
-  const endpoint = "http://localhost:3002/api/gorder/createCustomer";
-  //   const endpoint = "http://backend-classer-env.eba-hq9mhwvp.il-central-1.elasticbeanstalk.com/api/gorder/createCustomer";
+  //   const endpoint = "http://localhost:3002/api/gorder/createCustomer";
+  const endpoint = "http://backend-classer-env.eba-hq9mhwvp.il-central-1.elasticbeanstalk.com/api/gorder/createCustomer";
 
   const body = {
     businessName: data.OwnerEntryName,
     customerMainContactName: data.OwnerEntryName + data.OwnerEntryLastName,
     address: "כתובת",
     userName: "user" + data.OwnerEntryIdentity,
-    email: "mail@gmail.net",
+    email: data.email,
     phone: data.phone,
     telephone: "",
     fax: "",

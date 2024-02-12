@@ -19,6 +19,7 @@ const fieldDefinitions = [
   { name: "phone", label: "טלפון", placeholder: "טלפון", component: Input },
   { name: "OwnerEntryIdentity", label: "תעודת זהות", placeholder: "תעודת זהות", component: Input },
   { name: "businessType", label: "סוג העסק", placeholder: "סוג העסק", component: SelectValue },
+  { name: "email", label: "מייל", placeholder: "מייל", component: Input },
 ];
 
 const defaultValues = {
@@ -27,6 +28,7 @@ const defaultValues = {
   phone: "",
   OwnerEntryIdentity: "",
   businessType: "",
+  email: "",
   //   customerActivityTypeId: "",
   //   businessNumber: "",
   //   incomeTaxFileNumber: "",
@@ -52,6 +54,10 @@ export const FormSchema = z.object({
   }),
   businessType: z.string().min(1, {
     message: "יש לבחור סוג עסק.",
+  }),
+
+  email: z.string().email({
+    message: 'הדוא"ל אינו בפורמט תקין.', // Custom error message for invalid email format
   }),
 
   // businessNumber: z.string().min(1, {
