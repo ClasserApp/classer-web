@@ -90,7 +90,7 @@ const CustomForm = () => {
             {fieldDefinitions.map(({ name, label, placeholder, component: Component }) => (
               <FormField
                 key={name}
-                name={name}
+                name={name as "OwnerEntryName" | "OwnerEntryLastName" | "phone" | "OwnerEntryIdentity" | "businessType" | "email"}
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
