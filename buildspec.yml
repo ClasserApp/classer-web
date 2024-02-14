@@ -1,15 +1,14 @@
 version: 0.2
-
 phases:
   install:
     commands:
-      - echo "Installing source NPM dependencies..."
-
+      - npm install -g typescript
+      - npm install
   build:
     commands:
-      - echo "Building the app..."
-
+      - npm run build
 artifacts:
+  type: zip
   files:
-    - "**/*"
-  base-directory: ""
+    - package.json
+    - .next/**/*
