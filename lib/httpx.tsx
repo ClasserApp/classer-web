@@ -4,8 +4,8 @@ import { z } from "zod";
 
 export async function createCustomer(data: z.infer<typeof FormSchema>) {
   // const endpoint = "http://localhost:3002/api/gorder/createCustomer";
-  const endpoint = "http://backend-classer-env.eba-hq9mhwvp.il-central-1.elasticbeanstalk.com/api/gorder/createCustomer";
-
+  // const endpoint = "http://backend-classer-env.eba-hq9mhwvp.il-central-1.elasticbeanstalk.com/api/gorder/createCustomer";
+  const endpoint = "https://test.classer.co.il/api";
   const body = {
     businessName: data.OwnerEntryName,
     customerMainContactName: data.OwnerEntryName + data.OwnerEntryLastName,
