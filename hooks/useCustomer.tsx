@@ -7,7 +7,7 @@ import { newCustomerRequest } from "@/services/requestFactory";
 
 export const useCustomer = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [success, setSuccess] = useState(true);
+  const [success, setSuccess] = useState(false);
   const { toast } = useToast();
 
   const createNewCustomer = async (newCustomerData: z.infer<typeof FormSchema>) => {
