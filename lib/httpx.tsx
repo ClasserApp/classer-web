@@ -5,7 +5,16 @@ import { z } from "zod";
 export async function createCustomer(data: z.infer<typeof FormSchema>) {
   // const endpoint = "http://localhost:3002/api/gorder/createCustomer";
   // const endpoint = "http://backend-classer-env.eba-hq9mhwvp.il-central-1.elasticbeanstalk.com/api/gorder/createCustomer";
-  const endpoint = "https://test.classer.co.il/api/gorder/createCustomer";
+  const endPoint =
+    process.env.endpoint || "http://backend-classer-env.eba-hq9mhwvp.il-central-1.elasticbeanstalk.com/api/gorder/createCustomer";
+  const organizationEmployeId = process.env.organizationEmployeeId;
+  const organizationID = process.env.organizationId;
+
+  console.log("Endpoint:", process.env.endpoint);
+  console.log("Organization Employee ID:", process.env.organizationEmployeeId);
+  console.log("Organization ID:", process.env.organizationId);
+
+  console.log(endPoint);
   const body = {
     businessName: data.OwnerEntryName,
     customerMainContactName: data.OwnerEntryName + data.OwnerEntryLastName,
@@ -36,14 +45,14 @@ export async function createCustomer(data: z.infer<typeof FormSchema>) {
     NationalInsuranceDeductionIDField: "",
     reportingFrequency: 1,
     accountingType: 0,
-    organizationEmployeeId: "8736ddad-cc50-4375-c95f-08dbef3fb992",
+    organizationEmployeeId: organizationEmployeId,
     services: "0",
     paymentFrequency: 1,
     payment: "1",
     secretImgsTxt: "",
     accountManagementMethod: 0,
     WizcloudApiDBName: "",
-    organizationId: "1865197c-0d0e-4461-74f8-08dbc4e37956",
+    organizationId: organizationID,
     incomeTaxDeduction: null,
     nationalInsuranceDeduction: null,
     customerOwners: [
@@ -60,12 +69,19 @@ export async function createCustomer(data: z.infer<typeof FormSchema>) {
     Children: [],
   };
 
-  axios
-    .post(endpoint, body)
-    .then((response) => {
-      console.log("Success:", response.data); // Handle the response data
-    })
-    .catch((error) => {
-      console.error("Error:", error.response || error.message); // Handle any errors
-    });
+  try {
+    const response = await axios.post(endPoint, body);
+    console.log("Success:", response.data.message); // Handle the response data
+    return response.data; // Optionally return the response data for further processing
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      // This will check if the error is an Axios error
+      console.error("Errorr:", error.response?.data || error.message); // Improved error handling
+      return error.response?.data || error.message;
+    } else {
+      // This is for non-Axios errors
+      console.error("Unexpected error:", error);
+    }
+    throw error; // Rethrow the error if you want calling code to handle it as well.
+  }
 }

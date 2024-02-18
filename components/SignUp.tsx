@@ -1,7 +1,3 @@
-import React from "react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "./ui/card";
-import { SignUpForm } from "./SignUpForm";
-import Image from "next/image";
 import SplitForm from "./SplitForm";
 
 const SignUp = () => {
