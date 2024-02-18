@@ -10,11 +10,11 @@ export async function createCustomer(data: z.infer<typeof FormSchema>) {
   const organizationEmployeId = process.env.organizationEmployeeId;
   const organizationID = process.env.organizationId;
 
-  console.log("Endpoint:", process.env.endpoint);
-  console.log("Organization Employee ID:", process.env.organizationEmployeeId);
-  console.log("Organization ID:", process.env.organizationId);
+  // console.log("Endpoint:", process.env.endpoint);
+  // console.log("Organization Employee ID:", process.env.organizationEmployeeId);
+  // console.log("Organization ID:", process.env.organizationId);
 
-  console.log(endPoint);
+  // console.log(endPoint);
   const body = {
     businessName: data.OwnerEntryName,
     customerMainContactName: data.OwnerEntryName + data.OwnerEntryLastName,

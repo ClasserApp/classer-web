@@ -116,7 +116,7 @@ const CustomForm = () => {
       // It might be beneficial to introduce a retry mechanism here for certain types of errors
       // For instance, if it's a network error or a 503 Service Unavailable error
 
-      setOperationSuccess(true);
+      // setOperationSuccess(true);
       setOperationMessage(errorMessage);
       console.error("Error during customer creation: ", errorMessage);
     }
