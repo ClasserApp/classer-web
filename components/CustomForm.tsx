@@ -1,22 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Separator } from "./ui/separator";
 import { ScrollArea } from "./ui/scroll-area";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { businessTypes } from "@/constants/BusinessTypes";
-import { createCustomer } from "@/lib/httpx";
-
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useCustomer } from "@/hooks/useCustomer";
+import { CheckCircledIcon, CheckIcon } from "@radix-ui/react-icons";
 
 const fieldDefinitions = [
   { name: "OwnerEntryName", label: "שם פרטי", placeholder: "שם פרטי", component: Input },
@@ -73,13 +66,9 @@ export const FormSchema = z.object({
   // }),
 });
 
-// The adjustments in defaultValues for the useForm hook remain unchanged.
-
 const CustomForm = () => {
-  const [operationSuccess, setOperationSuccess] = useState(false);
-  const [operationMessage, setOperationMessage] = useState("");
-  const router = useRouter();
-  const [formData, setFormData] = useState<z.infer<typeof FormSchema>>();
+  const { createNewCustomer, isLoading, success } = useCustomer();
+  // const [formData, setFormData] = useState<z.infer<typeof FormSchema>>();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: defaultValues,
@@ -87,63 +76,26 @@ const CustomForm = () => {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      const response = await createCustomer(data);
-      setOperationSuccess(true);
-      // setOperationMessage(response.message); // Assuming the message is directly in response
-      console.log(response); // Log the response or handle it as needed
+      const response = await createNewCustomer(data);
     } catch (error: any) {
-      // Catch block to handle any type of error
-      let errorMessage = "Failed to create customer."; // Default error message
-
-      if (axios.isAxiosError(error)) {
-        // Handle Axios errors
-        if (error.response) {
-          // Server responded with a status code that falls out of the range of 2xx
-          const message = error.response.data?.message || error.response.statusText;
-          errorMessage = `Server responded with an error: ${message}`;
-        } else if (error.request) {
-          // The request was made but no response was received
-          errorMessage = "No response received from the server.";
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          errorMessage = error.message;
-        }
-      } else if (error instanceof Error) {
-        // Handle non-Axios (generic) errors
-        errorMessage = error.message;
-      }
-
-      // It might be beneficial to introduce a retry mechanism here for certain types of errors
-      // For instance, if it's a network error or a 503 Service Unavailable error
-
-      // setOperationSuccess(true);
-      setOperationMessage(errorMessage);
-      console.error("Error during customer creation: ", errorMessage);
+      console.log("error");
     }
   }
 
-  const AlertDestructive = () => (
-    <Alert variant="destructive">
-      <ExclamationTriangleIcon className="h-4 w-4" />
-      <AlertTitle>שגיאה</AlertTitle>
-      <AlertDescription>{operationMessage}</AlertDescription>
-    </Alert>
-  );
-
-  const SuccessComponent = () => (
-    <Alert>
-      {/* <RocketIcon className="h-4 w-4" /> */}
-      <AlertTitle>תודה שנרשמתה!</AlertTitle>
-      <AlertDescription>בשעות הקרובות אנו ניצור אתך קשר להשלמת פרטים, תודה.</AlertDescription>
-    </Alert>
-  );
   return (
     <div>
-      {operationSuccess ? (
-        <SuccessComponent />
+      {success ? (
+        <div>
+          <div className=" flex items-center space-x-4 rounded-md border p-4">
+            <CheckCircledIcon color="#152d3f" />
+            <div className="flex-1 space-y-1">
+              <p className="text-sm font-medium leading-none">תודה שנרשמתה</p>
+              <p className="text-sm text-muted-foreground">אנו ניצור איתך קשר בקרוב</p>
+            </div>
+          </div>
+        </div>
       ) : (
         <div>
-          {operationMessage ? <AlertDestructive /> : null}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1 ">
               <ScrollArea className=" h-1/3 w-full mb-6">
@@ -189,7 +141,7 @@ const CustomForm = () => {
                   />
                 ))}
               </ScrollArea>
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={isLoading}>
                 הרשמה
               </Button>
             </form>
