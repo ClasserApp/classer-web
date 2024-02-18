@@ -133,65 +133,69 @@ const CustomForm = () => {
   const SuccessComponent = () => (
     <Alert>
       {/* <RocketIcon className="h-4 w-4" /> */}
-      <AlertTitle>Heads up!</AlertTitle>
-      <AlertDescription>You can add components to your app using the cli.</AlertDescription>
+      <AlertTitle>תודה שנרשמתה!</AlertTitle>
+      <AlertDescription>בשעות הקרובות אנו ניצור אתך קשר להשלמת פרטים, תודה.</AlertDescription>
     </Alert>
   );
   return (
     <div>
-      <div>
-        {operationMessage ? <AlertDestructive /> : null}
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1 ">
-            <ScrollArea className=" h-1/3 w-full mb-6">
-              {fieldDefinitions.map(({ name, label, placeholder, component: Component }) => (
-                <FormField
-                  key={name}
-                  name={
-                    name as "OwnerEntryName" | "OwnerEntryLastName" | "phone" | "OwnerEntryIdentity" | "businessType" | "email"
-                  }
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{label}</FormLabel>
+      {operationSuccess ? (
+        <SuccessComponent />
+      ) : (
+        <div>
+          {operationMessage ? <AlertDestructive /> : null}
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1 ">
+              <ScrollArea className=" h-1/3 w-full mb-6">
+                {fieldDefinitions.map(({ name, label, placeholder, component: Component }) => (
+                  <FormField
+                    key={name}
+                    name={
+                      name as "OwnerEntryName" | "OwnerEntryLastName" | "phone" | "OwnerEntryIdentity" | "businessType" | "email"
+                    }
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{label}</FormLabel>
 
-                      {Component == SelectValue ? (
-                        <FormControl>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="סוג העסק" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {businessTypes.map((item) => {
-                                return (
-                                  <SelectItem key={item.type} value={item.type}>
-                                    {item.typeAsString}
-                                  </SelectItem>
-                                );
-                              })}
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-                      ) : (
-                        <FormControl>
-                          <Component {...field} placeholder={placeholder} />
-                        </FormControl>
-                      )}
+                        {Component == SelectValue ? (
+                          <FormControl>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="סוג העסק" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {businessTypes.map((item) => {
+                                  return (
+                                    <SelectItem key={item.type} value={item.type}>
+                                      {item.typeAsString}
+                                    </SelectItem>
+                                  );
+                                })}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                        ) : (
+                          <FormControl>
+                            <Component {...field} placeholder={placeholder} />
+                          </FormControl>
+                        )}
 
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              ))}
-            </ScrollArea>
-            <Button type="submit" className="w-full">
-              הרשמה
-            </Button>
-          </form>
-        </Form>
-      </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ))}
+              </ScrollArea>
+              <Button type="submit" className="w-full">
+                הרשמה
+              </Button>
+            </form>
+          </Form>
+        </div>
+      )}
     </div>
   );
 };
