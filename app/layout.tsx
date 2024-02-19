@@ -9,7 +9,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "קלסר",
-  // description: "נהל רת העסק מהנייד בקלות",
+  description: "נהל את העסק מהנייד בקלות",
+  icons: { icon: "/favicon.ico", apple: "/favicon.ico" },
 };
 
 export default function RootLayout({
